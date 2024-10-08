@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
     fun Login(fileName: String): String {
         return assets.open(fileName).bufferedReader().use { it.readText() }
     }
