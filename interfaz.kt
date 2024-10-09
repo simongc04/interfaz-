@@ -3,25 +3,34 @@ package com.example.interfaz
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.interfaz.ui.theme.InterfazTheme
 import java.io.BufferedReader
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import java.io.InputStreamReader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val textFromFile1 = Login("archivo1.txt")
-        val textFromFile2 = Login("archivo2.txt")
+        val textFromFile1 = login("archivo1.txt")
+        val textFromFile2 = login("archivo2.txt")
 
         setContent {
             InterfazTheme {
@@ -38,9 +47,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    fun borrar() {
 
+    }
 
-    fun Login(fileName: String): String {
+    fun editar(){
+
+    }
+
+    fun login(fileName: String): String {
         return assets.open(fileName).bufferedReader().use { it.readText() }
     }
 
@@ -61,7 +76,7 @@ class MainActivity : ComponentActivity() {
                     lineHeight = 146.sp,
                 )
                 Text(
-                    text = text1, // Mostrar el contenido del archivo 1
+                    text = text1,
                     fontSize = 30.sp,
                     lineHeight = 146.sp,
                 )
@@ -72,10 +87,33 @@ class MainActivity : ComponentActivity() {
                     fontSize = 30.sp
                 )
                 Text(
-                    text = text2, // Mostrar el contenido del archivo 2
+                    text = text2,
                     fontSize = 30.sp,
                 )
+
+
             }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp),
+            ) {
+                Button(
+                    onClick = {},
+                ) {
+                    Text("editar")
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Button(
+                    onClick = {},
+                ) {
+                    Text("Borrar")
+                }
+            }
+
+
         }
     }
 }
