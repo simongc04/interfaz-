@@ -1,9 +1,14 @@
 # Gestor de Contraseñas.
 ### Integrantes: iballa y simon
 
-### -¿Ambos miembros contribuyeron de manera equilibrada?
+####  -¿Ambos miembros contribuyeron de manera equilibrada?
+
+
+Ambos contribuimos de manera equilibrada, aportando ideas y esfuerzo en igual medida para alcanzar el objetivo de realizar el gestor.
 
 #### -¿Hubo buena comunicación y toma de decisiones conjunta?
+
+Hubo una excelente comunicación y toma de decisiones conjunta, lo que permitió trabajar de manera efectiva y mantener un ambiente de colaboración respecto a la creación del gestor de contraseñas.
 
 
 
