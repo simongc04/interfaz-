@@ -1,10 +1,10 @@
-
 package com.example.interfaz
 
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,28 +19,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.interfaz.ui.theme.InterfazTheme
-import java.io.BufferedReader
 import java.io.File
+import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
-import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import com.example.interfaz.ui.theme.InterfazTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val textFromFile1 = login("archivo1.txt")
-        val textFromFile2 = login("archivo2.txt")
-
+        //guardarArchivo("archivo1.txt","aaa")
+        //guardarArchivo("archivo2.txt","aaasdsdsds")
+        val usuario = leerArchivo("archivo1.txt")
+        val contraseña = leerArchivo("archivo2.txt")
         setContent {
             InterfazTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         message = "usuario:",
                         from = "contraseña:",
-                        text1 = textFromFile1,
-                        text2 = textFromFile2,
+                        text1 = usuario,
+                        text2 = contraseña,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -48,17 +49,71 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun borrar() {
 
+    fun guardarArchivo(nombreArchivo : String, texto : String){
+        val estadoAlmacenamiento = Environment.getExternalStorageState()
+
+
+
+
+        if (estadoAlmacenamiento == Environment.MEDIA_MOUNTED) {
+            val directorio = getFilesDir()
+            val archivo = File(directorio, nombreArchivo)
+            try {
+                val flujoSalida = FileOutputStream(archivo, true)
+                val writer = OutputStreamWriter(flujoSalida)
+                writer.append(texto)
+                writer.close()
+                Log.i("DAM2", "Texto añadido en $directorio $nombreArchivo")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("DAM2", "Error al guardar el archivo")
+            }
+        } else {
+            Log.i("DAM2", "No se pudo acceder al almacenamiento externo")
+        }
+    }
+    fun leerArchivo(nombreArchivo : String) : String {
+        val estadoAlmacenamiento = Environment.getExternalStorageState()
+        if (estadoAlmacenamiento == Environment.MEDIA_MOUNTED) {
+            val directorio = getFilesDir()
+            val archivo = File(directorio, nombreArchivo)
+            try {
+                val reader = archivo.readText()
+                Log.i("DAM2", "El archivo contiene $reader")
+                return reader
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("DAM2", "Error al leer el archivo")
+            }
+        }else {
+            Log.i("DAM2", "No se pudo acceder al almacenamiento externo")
+        }
+        return "Error"
+    }
+    fun borrarContenido(archivoString: String) {
+        val directorio = getFilesDir()
+        val archivo = File(directorio, archivoString)
+        if (!archivo.exists()) {
+            Log.i("DAM2","El archivo data no existe.")
+        } else {
+            val fw: FileWriter
+            try {
+                fw = FileWriter(archivo)
+                fw.flush()
+                fw.close()
+
+
+
+
+                Log.i("DAM2","El archivo data fue eliminado.")
+            } catch (ex: IOException) {
+                Log.i("DAM2","Error al borrar contenido del fichero")
+            }
+        }
     }
 
-    fun editar(){
 
-    }
-
-    fun login(fileName: String): String {
-        return assets.open(fileName).bufferedReader().use { it.readText() }
-    }
 
 
     @Composable
@@ -92,7 +147,6 @@ class MainActivity : ComponentActivity() {
                     fontSize = 30.sp,
                 )
 
-
             }
             Row(
                 modifier = Modifier
@@ -104,16 +158,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Text("editar")
                 }
-
                 Spacer(modifier = Modifier.width(16.dp))
 
+
                 Button(
-                    onClick = {},
+                    onClick = {
+                        borrarContenido("archivo1.txt")
+                        borrarContenido("archivo2.txt")
+                    },
                 ) {
                     Text("Borrar")
                 }
             }
-
 
         }
     }
