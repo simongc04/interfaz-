@@ -1,5 +1,3 @@
 # Gestor de Contraseñas.
 
-
-
-Integrantes: iballa y simon
+## Integrantes: iballa y simon
